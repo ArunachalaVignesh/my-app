@@ -20,6 +20,8 @@ function Create() {
         //setstudent(mockStudents) 
         if (id) { getStudents(id); setIsEditMode(true) }
     }, [id]);
+    const [isSuccess, setIsSuccess] = useState(false);
+    const [isVictory, setIsVictory] = useState(false);
     function handleChange(value, name) {
         console.log(value, name)
         let tempstudent = { ...student };
@@ -28,13 +30,15 @@ function Create() {
         console.log(student)
     }
     function getStudents(id) {
-       if(id){ fetch("https://financier.onrender.com/students")
+        if (id) {
+            fetch("https://financier.onrender.com/students")
             .then((response) => response.json())
             .then((data) => {
                 let tempStud = [...data]
                 let editStud = tempStud.filter(students => students._id == id);
                 setstudent(editStud[0]);
-            })}
+            })
+        }
     }
 
     function handleClick() {
@@ -42,7 +46,7 @@ function Create() {
     }
     function handleSubmit() {
         if (isEditmode) {
-            let tmpStudent = {...student};
+            let tmpStudent = { ...student };
             tmpStudent._id = id;
             fetch('https://financier.onrender.com/students', {
                 method: 'PUT',
@@ -53,7 +57,7 @@ function Create() {
                 body: JSON.stringify(tmpStudent)
             })
                 .then(res => res.json())
-                .then(res => alert('Student successfully updated'));
+                .then(res => setIsVictory('True'));
         }
         else {
 
@@ -66,7 +70,7 @@ function Create() {
                 body: JSON.stringify(student)
             })
                 .then(res => res.json())
-                .then(res => alert('Student successfully created'));
+                .then(res => setIsSuccess('True'));
         }
     }
     return (
@@ -89,6 +93,7 @@ function Create() {
                 <textarea id="address" name="address" placeholder="Your Address" style={{ height: '100px' }} required value={student.address} onChange={e => handleChange(e.target.value, e.target.name)}></textarea>
                 <input type="button" onClick={() => handleSubmit()} value="Submit"></input>
                 {isSuccess && <p>Student successfully created</p>}
+                {isVictory && <p>Student successfully edited</p>}
             </form>
         </div>
 
