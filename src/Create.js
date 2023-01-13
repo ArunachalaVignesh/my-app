@@ -92,8 +92,8 @@ function Create() {
                 <label for="address"><b>ADDRESS</b></label>
                 <textarea id="address" name="address" placeholder="Your Address" style={{ height: '100px' }} required value={student.address} onChange={e => handleChange(e.target.value, e.target.name)}></textarea>
                 <input type="button" onClick={() => handleSubmit()} value="Submit"></input>
-                {isSuccess && <p>Student successfully created</p>}
-                {isVictory && <p>Student successfully edited</p>}
+                {isSuccess && <p style={{color:"green"}}>Student successfully created</p>}
+                {isVictory && <p style={{color:"green"}}>Student successfully edited</p>}
             </form>
         </div>
 
