@@ -69,7 +69,6 @@ function Create() {
         }
     }
     return (
-
         <div className="container">
             <button classname='ViewallStudentsButton' onClick={handleClick}>
                 View All Students
