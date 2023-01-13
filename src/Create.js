@@ -18,7 +18,7 @@ function Create() {
     let { id } = useParams();
     useEffect(() => {
         //setstudent(mockStudents) 
-        if (id != "") { getStudents(id); setIsEditMode(true) }
+        if (id) { getStudents(id); setIsEditMode(true) }
     }, [id]);
     function handleChange(value, name) {
         console.log(value, name)
@@ -28,12 +28,13 @@ function Create() {
         console.log(student)
     }
     function getStudents(id) {
-        fetch("https://financier.onrender.com/students")
+       if(id){ fetch("https://financier.onrender.com/students")
             .then((response) => response.json())
             .then((data) => {
-                data.filter(students => students._id == id);
-                setstudent(data[0]);
-            })
+                let tempStud = [...data]
+                let editStud = tempStud.filter(students => students._id == id);
+                setstudent(editStud[0]);
+            })}
     }
 
     function handleClick() {
@@ -52,7 +53,7 @@ function Create() {
                 body: JSON.stringify(tmpStudent)
             })
                 .then(res => res.json())
-                .then(res => console.log(res));
+                .then(res => alert('Student successfully updated'));
         }
         else {
 
@@ -65,7 +66,7 @@ function Create() {
                 body: JSON.stringify(student)
             })
                 .then(res => res.json())
-                .then(res => console.log(res));
+                .then(res => alert('Student successfully created'));
         }
     }
     return (
@@ -87,6 +88,7 @@ function Create() {
                 <label for="address"><b>ADDRESS</b></label>
                 <textarea id="address" name="address" placeholder="Your Address" style={{ height: '100px' }} required value={student.address} onChange={e => handleChange(e.target.value, e.target.name)}></textarea>
                 <input type="button" onClick={() => handleSubmit()} value="Submit"></input>
+                {isSuccess && <p>Student successfully created</p>}
             </form>
         </div>
 
